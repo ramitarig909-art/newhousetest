@@ -585,6 +585,18 @@ body.ar .subcat-empty { font-family:'Cairo',sans-serif; }
 }
 </style>
 
+<!-- no_flash_intro -->
+<script>
+  (function(){
+    try{
+      if(sessionStorage.getItem('nh_intro_seen')){
+        var s=document.createElement('style');
+        s.textContent='#intro{display:none !important;opacity:0 !important;visibility:hidden !important;transition:none !important;}';
+        document.head.appendChild(s);
+      }
+    }catch(e){}
+  })();
+</script>
 </head>
 <body>
 
@@ -1264,11 +1276,9 @@ setTimeout(function(){
       // With no domain yet, url is "#products", so we leave the link out of the message.
       var linkPart = (url && /^https?:\/\//i.test(url)) ? (" " + url) : "";
       var msg;
-      if (ar) {
-        msg = "مرحبًا، أنا مهتم بهذا المنتج من نيو هاوس للأثاث: " + name + " – مجموعة " + cat + linkPart;
-      } else {
-        msg = "Hello, I'm interested in this product from New House Furniture: " + name + " \u2013 " + cat + " Collection" + linkPart;
-      }
+      var msgEn = "Hello, I\'m interested in this product from New House Furniture: " + name + " \u2013 " + cat + " Collection" + linkPart;
+      var msgAr = "\u0645\u0631\u062d\u0628\u064b\u0627\u060c \u0623\u0646\u0627 \u0645\u0647\u062a\u0645 \u0628\u0647\u0630\u0627 \u0627\u0644\u0645\u0646\u062a\u062c \u0645\u0646 \u0646\u064a\u0648 \u0647\u0627\u0648\u0633 \u0644\u0644\u0623\u062b\u0627\u062b: " + name + " \u2013 \u0645\u062c\u0645\u0648\u0639\u0629 " + cat + linkPart;
+      msg = msgEn + "\n\n" + msgAr;
       var wa = "https://wa.me/" + WA_NUMBER + "?text=" + encodeURIComponent(msg);
       window.open(wa, "_blank", "noopener");
     });
@@ -2714,9 +2724,10 @@ and the WhatsApp message (name + description + link) still works perfectly.
   },{passive:true});
   // actions
   lb.querySelector('.nhlb-wa').addEventListener('click',function(){
-    var d=data[cur],ar=isAr();
-    var msg=ar?("مرحبًا، أنا مهتم بهذا المنتج من نيو هاوس للأثاث:\n"+d.nameAr+" — "+d.catAr)
-              :("Hello, I'm interested in this product from New House Furniture:\n"+d.nameEn+" — "+d.catEn);
+    var d=data[cur];
+    var msgEn="Hello, I'm interested in this product from New House Furniture:\n"+d.nameEn+" \u2014 "+d.catEn+" Collection";
+    var msgAr="\u0645\u0631\u062d\u0628\u064b\u0627\u060c \u0623\u0646\u0627 \u0645\u0647\u062a\u0645 \u0628\u0647\u0630\u0627 \u0627\u0644\u0645\u0646\u062a\u062c \u0645\u0646 \u0646\u064a\u0648 \u0647\u0627\u0648\u0633 \u0644\u0644\u0623\u062b\u0627\u062b:\n"+d.nameAr+" \u2014 \u0645\u062c\u0645\u0648\u0639\u0629 "+d.catAr;
+    var msg=msgEn+"\n\n"+msgAr;
     window.open("https://wa.me/"+WA+"?text="+encodeURIComponent(msg),"_blank");
   });
   lb.querySelector('.nhlb-share').addEventListener('click',function(){
